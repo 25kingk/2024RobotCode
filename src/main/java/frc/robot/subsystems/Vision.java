@@ -43,13 +43,13 @@ public class Vision extends SubsystemBase{
         return 0;
     }
 
-    // public Transform3d translationMethod() {
-    //     var result = limelight.getLatestResult();
+    /*  public Transform3d translationMethod() {
+         var result = limelight.getLatestResult();
 
-    //     if (result.hasTargets()) {
-    //         return  result.getBestTarget().getBestCameraToTarget();
-    //     }
-    //     return new Transform3d();
-    // }
-
+         if (result.hasTargets()) {
+             return  result.getBestTarget().getBestCameraToTarget();
+         }
+         return new Transform3d();
+     } 
+*/
 }

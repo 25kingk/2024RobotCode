@@ -4,6 +4,9 @@
 // 1/24/24 Kaden
 //added shoot subsystem and constant shooting using voltage
 
+/*  2/12/24 Kyle
+Added Holonomic style Autobuilder for Pathplanner and added code to return the example auto named New Auto.
+*/
 package frc.robot;
 
 import java.util.function.Supplier;
@@ -89,6 +92,26 @@ public class RobotContainer {
         shootVolts.onFalse(new InstantCommand(() -> shoot.setMotorVolts(0)));
     
     }
+
+    AutoBuilder.configureHolonomic(
+        this::getPose, // Robot pose supplier
+        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants. WILL NEED TWEAKING
+            new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants. WILL NEED TWEAKING
+            4.5, // Max module speed, in m/s. WILL NEED TWEAKING
+            0.4, // Drive base radius in meters. Distance from robot center to furthest module. WILL NEED TWEAKING
+            new ReplanningConfig() // Default path replanning config. See the API for the options here
+        ),
+        this // Reference to this subsystem to set requirements
+    );
+
+    // This creates an auto using the path planner GUI auto named "New Auto"
+   public Command getAutonomousCommand(){
+    return new PathPlannerAuto("New Auto"); //Returns the example auto that was left as New Auto.
+   }
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
